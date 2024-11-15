@@ -39,26 +39,38 @@ public class LevelData
     public static int star1;
     public static int star2;
     public static int star3;
+
+    // public static void LoadDataFromXML(int currentLevel)
+    // {
+    //     requestMissions.Clear();
+    //     TextAsset textReader = Resources.Load( "AlternateLevels/" + currentLevel + ".txt") as TextAsset;
+    //     ProcessGameDataFromXML( textReader );
+
+    // }
+
+    // public static void LoadDataFromLocal(int currentLevel)
+    // {
+    //     requestMissions.Clear();
+    //     //Read data from text file
+    //     TextAsset mapText = Resources.Load("AlternateLevels/" + currentLevel) as TextAsset;
+    //     ProcessGameDataFromString(mapText.text);
+    // }
     public static void LoadDataFromXML(int currentLevel)
     {
-        requestMissions.Clear();
-       // TextAsset textAsset = (TextAsset)Resources.Load(  "4.txt", typeof( TextAsset ) ) ;
-        TextAsset textReader = Resources.Load( "Levels/" + currentLevel + ".txt") as TextAsset;
-      //  TextReader textReader = new StreamReader(Application.dataPath + "/Resources/Levels/" + currentLevel + ".tmx");
-        //TextReader textReader = new StreamReader( textAsset );
-        //TextReader textReader = new TextReader( textAsset );
-        ProcessGameDataFromXML( textReader );
-       // textReader.Close();
-
+        LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+        string levelSetPath = toggleHandler.GetLevelSetPath();
+        TextAsset textReader = Resources.Load(levelSetPath + currentLevel + ".txt") as TextAsset;
+        ProcessGameDataFromXML(textReader);
     }
 
     public static void LoadDataFromLocal(int currentLevel)
     {
-        requestMissions.Clear();
-        //Read data from text file
-        TextAsset mapText = Resources.Load("Levels/" + currentLevel) as TextAsset;
+        LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+        string levelSetPath = toggleHandler.GetLevelSetPath();
+        TextAsset mapText = Resources.Load(levelSetPath + currentLevel) as TextAsset;
         ProcessGameDataFromString(mapText.text);
     }
+
     public static void LoadDataFromURL(int currentLevel)
     {
         //Read data from your server, if you want
@@ -227,14 +239,36 @@ public class LevelData
         return (Target)LevelData.mode;
     }
 
+    // public static bool LoadLevel(int currentLevel)
+    // {
+    //     //Read data from text file
+    //     TextAsset mapText = Resources.Load("AlternateLevels/" + currentLevel) as TextAsset;
+    //     if (mapText == null)
+    //     {
+    //         mapText = Resources.Load("AlternateLevels/" + currentLevel) as TextAsset;
+    //     }
+    //     ProcesDataFromString(mapText.text);
+    //     return true;
+    // }
     public static bool LoadLevel(int currentLevel)
     {
-        //Read data from text file
-        TextAsset mapText = Resources.Load("Levels/" + currentLevel) as TextAsset;
+        // Get the level set path dynamically
+        LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+        string levelSetPath = toggleHandler != null ? toggleHandler.GetLevelSetPath() : "Levels/";
+
+        // Log the path being used
+        Debug.Log("Loading level from: " + levelSetPath + currentLevel);
+
+        // Read the level data
+        TextAsset mapText = Resources.Load(levelSetPath + currentLevel) as TextAsset;
         if (mapText == null)
         {
-            mapText = Resources.Load("Levels/" + currentLevel) as TextAsset;
+            Debug.LogError($"Level file not found: {levelSetPath + currentLevel}");
+            return false; // Return false if the file is missing
         }
+
+        Debug.Log("Load level data: " + (mapText.text));
+        // Process the level data
         ProcesDataFromString(mapText.text);
         return true;
     }

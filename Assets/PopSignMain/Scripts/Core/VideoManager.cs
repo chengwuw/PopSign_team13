@@ -50,40 +50,88 @@ public class VideoManager {
 	}
 
 	//POPSign Read Json file(The connection between colors and videos)
+	// void ReadJsonFromTXT()
+	// {
+	// 	int currentLevel = PlayerPrefs.GetInt("OpenLevel");
+
+	// 	//For Random Levels (BK)
+	// 	int randomizeLevels = PlayerPrefs.GetInt("RandomizeLevel", 0);
+
+
+	// 	//This seems to fetc
+
+	// 	//For Random Levels (BK)
+	// 	TextAsset textReader;
+	// 	if(randomizeLevels == 0)
+    //     {
+	// 		//Original code
+	// 		textReader = Resources.Load("VideoConnection/" + "level" + currentLevel) as TextAsset;
+	// 		Debug.Log("VideoConnection/" + "level" + currentLevel);
+	// 	}
+    //     else
+    //     {
+	// 		string path = Application.persistentDataPath + "/level" + currentLevel + ".txt";
+	// 		string levelText;
+	// 		using(StreamReader reader = new StreamReader(path))
+    //         {
+	// 			levelText = reader.ReadToEnd();
+    //         }
+
+	// 		textReader = new TextAsset(levelText);
+	// 		Debug.Log(path);
+	// 	}
+		
+	// 	JsonData jd = JsonMapper.ToObject(textReader.text);
+
+	// 	foreach(BallColor color in Enum.GetValues(typeof(BallColor)))
+	// 	{
+	// 		if (color == BallColor.random)
+	// 		{
+	// 			break;
+	// 		}
+	// 		string fileName = jd[color + "fileName"] + "";
+	// 		folderName = jd[color + "folderName"] + "";
+	// 		string frameNumber = jd[color + "frameNumber"] + "";
+	// 		string imageName = jd [color + "ImageName"] + "";
+	// 		if (fileName != "" && folderName != "" && frameNumber != "" && imageName != "")
+	// 		{
+	// 			videoList.Add(new Video (int.Parse (frameNumber), fileName, folderName, imageName, color));
+	// 		}
+	// 		string wordsSeen = PlayerPrefs.GetString("WordsSeen", "");
+	// 		string[] words = wordsSeen.Split(',');
+	// 		if(!words.Contains(fileName))
+	// 		{
+	// 			PlayerPrefs.SetString("WordsSeen", wordsSeen + fileName + ",");
+	// 		}
+	// 	}
+	// 	curtVideo = (Video) videoList [0];
+	// 	curtVideoIndex = 0;
+	// }
 	void ReadJsonFromTXT()
 	{
 		int currentLevel = PlayerPrefs.GetInt("OpenLevel");
 
-		//For Random Levels (BK)
-		int randomizeLevels = PlayerPrefs.GetInt("RandomizeLevel", 0);
+		// Get the toggle state for alternate levels
+		LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+		string videoConnectionPath = toggleHandler != null && toggleHandler.GetLevelSetPath() == "AlternateLevels/"
+			? "VideoConnectionAlternate/"
+			: "VideoConnection/";
 
+		// Log the path being used
+		Debug.Log("Video connection path: " + videoConnectionPath);
 
-		//This seems to fetc
-
-		//For Random Levels (BK)
-		TextAsset textReader;
-		if(randomizeLevels == 0)
-        {
-			//Original code
-			textReader = Resources.Load("VideoConnection/" + "level" + currentLevel) as TextAsset;
-			Debug.Log("VideoConnection/" + "level" + currentLevel);
+		// Load the JSON file for the current level
+		TextAsset textReader = Resources.Load(videoConnectionPath + "level" + currentLevel) as TextAsset;
+		if (textReader == null)
+		{
+			Debug.LogError("Video JSON file not found at: " + videoConnectionPath + "level" + currentLevel);
+			return;
 		}
-        else
-        {
-			string path = Application.persistentDataPath + "/level" + currentLevel + ".txt";
-			string levelText;
-			using(StreamReader reader = new StreamReader(path))
-            {
-				levelText = reader.ReadToEnd();
-            }
 
-			textReader = new TextAsset(levelText);
-			Debug.Log(path);
-		}
-		
+		// Process the JSON data
 		JsonData jd = JsonMapper.ToObject(textReader.text);
 
-		foreach(BallColor color in Enum.GetValues(typeof(BallColor)))
+		foreach (BallColor color in Enum.GetValues(typeof(BallColor)))
 		{
 			if (color == BallColor.random)
 			{
@@ -92,19 +140,23 @@ public class VideoManager {
 			string fileName = jd[color + "fileName"] + "";
 			folderName = jd[color + "folderName"] + "";
 			string frameNumber = jd[color + "frameNumber"] + "";
-			string imageName = jd [color + "ImageName"] + "";
-			if (fileName != "" && folderName != "" && frameNumber != "" && imageName != "")
+			string imageName = jd[color + "ImageName"] + "";
+			if (!string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(folderName) &&
+				!string.IsNullOrEmpty(frameNumber) && !string.IsNullOrEmpty(imageName))
 			{
-				videoList.Add(new Video (int.Parse (frameNumber), fileName, folderName, imageName, color));
+				videoList.Add(new Video(int.Parse(frameNumber), fileName, folderName, imageName, color));
 			}
+
 			string wordsSeen = PlayerPrefs.GetString("WordsSeen", "");
 			string[] words = wordsSeen.Split(',');
-			if(!words.Contains(fileName))
+			if (!words.Contains(fileName))
 			{
 				PlayerPrefs.SetString("WordsSeen", wordsSeen + fileName + ",");
 			}
 		}
-		curtVideo = (Video) videoList [0];
+
+		// Set the first video as the current video
+		curtVideo = (Video)videoList[0];
 		curtVideoIndex = 0;
 	}
 
