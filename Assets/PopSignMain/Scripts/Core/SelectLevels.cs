@@ -37,6 +37,13 @@ public class SelectLevels : MonoBehaviour
         TopicSetToggleHandler topicHandler = FindObjectOfType<TopicSetToggleHandler>();
         LevelSetToggleHandler levelHandler = FindObjectOfType<LevelSetToggleHandler>();
 
+		// Check for null handlers and log the issue
+		if (topicHandler == null && levelHandler == null)
+		{
+			Debug.Log("Both TopicSetToggleHandler and LevelSetToggleHandler are missing from the scene.");
+			levelSetPath = "Levels/"; // Default path
+		}
+
         // Determine the active level set path
         if (topicHandler.GetLevelSetPath() == "TopicLevels/")
         {
@@ -51,12 +58,6 @@ public class SelectLevels : MonoBehaviour
             Debug.Log("No valid toggle handler detected. Defaulting to 'Levels/'.");
             levelSetPath = "Levels/"; // Default path
         }
-
-
-        // LevelSetToggleHandler toggleHandler = FindObjectOfType<LevelSetToggleHandler>();
-        // levelSetPath = toggleHandler.GetLevelSetPath();
-
-        // Debug.Log("Using level set path: " + levelSetPath);
 
     }
 
