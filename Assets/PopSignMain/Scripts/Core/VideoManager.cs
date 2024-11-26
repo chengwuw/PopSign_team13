@@ -157,31 +157,33 @@ public class VideoManager {
 
 	private string GetVideoConnectionPath()
 	{
-		// Attempt to find the handlers
+		// Attempt to find the handlers in the current scene
 		TopicSetToggleHandler topicHandler = GameObject.FindObjectOfType<TopicSetToggleHandler>();
 		LevelSetToggleHandler levelHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
 
-		// Check for null handlers and log the issue
-		if (topicHandler == null && levelHandler == null)
-		{
-			Debug.Log("Both TopicSetToggleHandler and LevelSetToggleHandler are missing from the scene.");
-			return "VideoConnection/"; // Default path
-		}
-
-		// Check and use the appropriate toggle
+		// Check handlers
 		if (topicHandler != null && topicHandler.GetLevelSetPath() == "TopicLevels/")
 		{
-			Debug.Log("Using TopicLevels for VideoConnection path.");
 			return "VideoConnectionTopic/";
 		}
 		else if (levelHandler != null && levelHandler.GetLevelSetPath() == "AlternateLevels/")
 		{
-			Debug.Log("Using AlternateLevels for VideoConnection path.");
 			return "VideoConnectionAlternate/";
 		}
 
-		// Default path if no specific toggle is active
-		Debug.LogWarning("No valid toggle state detected. Defaulting to 'VideoConnection/'.");
+		// Fallback to PlayerPrefs if handlers are not available
+		int useAlternateLevels = PlayerPrefs.GetInt("UseAlternateLevels", 0);
+		int useTopicLevels = PlayerPrefs.GetInt("UseTopicLevels", 0);
+		if (useAlternateLevels == 1)
+		{
+			return "VideoConnectionAlternate/";
+		}
+		else if (useTopicLevels == 1)
+		{
+			return "VideoConnectionTopic/";
+		}
+
+		Debug.LogWarning("No valid toggle detected. Defaulting to 'VideoConnection/'.");
 		return "VideoConnection/";
 	}
 
