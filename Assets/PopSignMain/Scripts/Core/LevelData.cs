@@ -57,17 +57,100 @@ public class LevelData
     // }
     public static void LoadDataFromXML(int currentLevel)
     {
-        LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
-        string levelSetPath = toggleHandler.GetLevelSetPath();
-        TextAsset textReader = Resources.Load(levelSetPath + currentLevel + ".txt") as TextAsset;
+        // Find the handlers for the toggles
+        TopicSetToggleHandler topicHandler = GameObject.FindObjectOfType<TopicSetToggleHandler>();
+        LevelSetToggleHandler levelHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+
+        // Ensure handlers are not null
+        if (topicHandler == null || levelHandler == null)
+        {
+            Debug.LogError("Toggle handlers are not set in the scene.");
+            return;
+        }
+
+        // Determine which toggle is active
+        string dataPath;
+        if (topicHandler.GetLevelSetPath() == "TopicLevels/")
+        {
+            // Topic levels toggle is active
+            dataPath = topicHandler.GetLevelSetPath();
+        }
+        else if (levelHandler.GetLevelSetPath() == "AlternateLevels/")
+        {
+            // Level set toggle is active
+            dataPath = levelHandler.GetLevelSetPath();
+        }
+        else
+        {
+            Debug.Log("No valid toggle handler or path detected. Defaulting to 'Levels/'.");
+            dataPath = "Levels/";
+        }
+
+        // Load the data from the chosen path
+        string fullPath = dataPath + currentLevel + ".txt";
+        TextAsset textReader = Resources.Load(fullPath) as TextAsset;
+
+        if (textReader == null)
+        {
+            Debug.LogError($"Failed to load data from path: {fullPath}");
+            return;
+        }
+
+        // Process the loaded XML data
         ProcessGameDataFromXML(textReader);
     }
 
+    // public static void LoadDataFromLocal(int currentLevel)
+    // {
+    //     LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+    //     string levelSetPath = toggleHandler.GetLevelSetPath();
+    //     TextAsset mapText = Resources.Load(levelSetPath + currentLevel) as TextAsset;
+    //     ProcessGameDataFromString(mapText.text);
+    // }
     public static void LoadDataFromLocal(int currentLevel)
     {
-        LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
-        string levelSetPath = toggleHandler.GetLevelSetPath();
-        TextAsset mapText = Resources.Load(levelSetPath + currentLevel) as TextAsset;
+        // Find the toggle handlers
+        TopicSetToggleHandler topicHandler = GameObject.FindObjectOfType<TopicSetToggleHandler>();
+        LevelSetToggleHandler levelHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+
+        // Ensure handlers are not null
+        if (topicHandler == null || levelHandler == null)
+        {
+            Debug.LogError("Toggle handlers are not set in the scene.");
+            return;
+        }
+
+        // Determine which path to use based on active toggle
+        string dataPath;
+        if (topicHandler.GetLevelSetPath() == "TopicLevels/")
+        {
+            // Use the path for Topic Levels
+            dataPath = topicHandler.GetLevelSetPath();
+        }
+        else if (levelHandler.GetLevelSetPath() == "AlternateLevels/")
+        {
+            // Level set toggle is active
+            dataPath = levelHandler.GetLevelSetPath();
+        }
+        else
+        {
+            Debug.Log("No valid toggle handler or path detected. Defaulting to 'Levels/'.");
+            dataPath = "Levels/";
+        }
+
+        // Construct the full path
+        string fullPath = dataPath + currentLevel;
+
+        // Load the map text asset from Resources
+        TextAsset mapText = Resources.Load(fullPath) as TextAsset;
+
+        if (mapText == null)
+        {
+            Debug.LogError($"Failed to load data from path: {fullPath}");
+            return;
+        }
+
+        // Process the loaded data as a string
         ProcessGameDataFromString(mapText.text);
     }
 
@@ -238,28 +321,57 @@ public class LevelData
         LoadLevel(levelNumber);
         return (Target)LevelData.mode;
     }
+    
 
     // public static bool LoadLevel(int currentLevel)
     // {
-    //     //Read data from text file
-    //     TextAsset mapText = Resources.Load("AlternateLevels/" + currentLevel) as TextAsset;
+    //     // Get the level set path dynamically
+    //     LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+    //     string levelSetPath = toggleHandler != null ? toggleHandler.GetLevelSetPath() : "Levels/";
+
+    //     // Log the path being used
+    //     Debug.Log("Loading level from: " + levelSetPath + currentLevel);
+
+    //     // Read the level data
+    //     TextAsset mapText = Resources.Load(levelSetPath + currentLevel) as TextAsset;
     //     if (mapText == null)
     //     {
-    //         mapText = Resources.Load("AlternateLevels/" + currentLevel) as TextAsset;
+    //         Debug.LogError($"Level file not found: {levelSetPath + currentLevel}");
+    //         return false; // Return false if the file is missing
     //     }
+
+    //     Debug.Log("Load level data: " + (mapText.text));
+    //     // Process the level data
     //     ProcesDataFromString(mapText.text);
     //     return true;
     // }
+
     public static bool LoadLevel(int currentLevel)
     {
-        // Get the level set path dynamically
-        LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
-        string levelSetPath = toggleHandler != null ? toggleHandler.GetLevelSetPath() : "Levels/";
+        // Find the toggle handlers
+        TopicSetToggleHandler topicHandler = GameObject.FindObjectOfType<TopicSetToggleHandler>();
+        LevelSetToggleHandler levelHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+
+        // Ensure handlers are not null and determine the active path
+        string levelSetPath;
+        if (topicHandler.GetLevelSetPath() == "TopicLevels/")
+        {
+            levelSetPath = topicHandler.GetLevelSetPath(); // Use Topic Levels path
+        }
+        else if (levelHandler.GetLevelSetPath() == "AlternateLevels/")
+        {
+            levelSetPath = levelHandler.GetLevelSetPath(); // Use Levels path
+        }
+        else
+        {
+            Debug.Log("No valid toggle handler or path detected. Defaulting to 'Levels/'.");
+            levelSetPath = "Levels/"; // Default to Levels path if no handler is set
+        }
 
         // Log the path being used
         Debug.Log("Loading level from: " + levelSetPath + currentLevel);
 
-        // Read the level data
+        // Load the level data
         TextAsset mapText = Resources.Load(levelSetPath + currentLevel) as TextAsset;
         if (mapText == null)
         {
@@ -267,10 +379,10 @@ public class LevelData
             return false; // Return false if the file is missing
         }
 
-        Debug.Log("Load level data: " + (mapText.text));
-        // Process the level data
-        ProcesDataFromString(mapText.text);
-        return true;
+        // Log and process the level data
+        Debug.Log("Loaded level data: " + mapText.text);
+        ProcesDataFromString(mapText.text); // Corrected method name from `ProcesDataFromString`
+        return true; // Return true if the level loads successfully
     }
 
     public static Target loadLevelByTextAsset(TextAsset tx)

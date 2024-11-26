@@ -25,12 +25,41 @@ public class SelectLevels : MonoBehaviour
     {
         pageText = GameObject.Find("Page Text").GetComponent<Text>();
 
-        // Determine the level set to use based on the toggle
-        LevelSetToggleHandler toggleHandler = FindObjectOfType<LevelSetToggleHandler>();
-        levelSetPath = toggleHandler.GetLevelSetPath();
+        // Dynamically determine the level set to use based on the toggle state
+        DetermineLevelSetPath();
 
         GenerateGrid();
     }
+
+    void DetermineLevelSetPath()
+    {
+        // Find both toggle handlers
+        TopicSetToggleHandler topicHandler = FindObjectOfType<TopicSetToggleHandler>();
+        LevelSetToggleHandler levelHandler = FindObjectOfType<LevelSetToggleHandler>();
+
+        // Determine the active level set path
+        if (topicHandler.GetLevelSetPath() == "TopicLevels/")
+        {
+            levelSetPath = topicHandler.GetLevelSetPath(); // Use Topic Levels path
+        }
+        else if (levelHandler.GetLevelSetPath() == "AlternateLevels/")
+        {
+            levelSetPath = levelHandler.GetLevelSetPath(); // Use Alternate Levels path
+        }
+        else
+        {
+            Debug.Log("No valid toggle handler detected. Defaulting to 'Levels/'.");
+            levelSetPath = "Levels/"; // Default path
+        }
+
+
+        // LevelSetToggleHandler toggleHandler = FindObjectOfType<LevelSetToggleHandler>();
+        // levelSetPath = toggleHandler.GetLevelSetPath();
+
+        // Debug.Log("Using level set path: " + levelSetPath);
+
+    }
+
 
     void GenerateGrid(int genfrom = 0)
     {
@@ -55,10 +84,13 @@ public class SelectLevels : MonoBehaviour
             if (posCounter + 1 >= countInRow * countInColumn) break;
             posCounter++;
         }
-        if (genfrom == 0) backButton.gameObject.SetActive(false);
-        else if (genfrom > 0) backButton.gameObject.SetActive(true);
-        if (l + 1 >= latestFile) nextButton.gameObject.SetActive(false);
-        else nextButton.gameObject.SetActive(true);
+        // if (genfrom == 0) backButton.gameObject.SetActive(false);
+        // else if (genfrom > 0) backButton.gameObject.SetActive(true);
+        // if (l + 1 >= latestFile) nextButton.gameObject.SetActive(false);
+        // else nextButton.gameObject.SetActive(true);
+
+        backButton.gameObject.SetActive(genfrom > 0);
+        nextButton.gameObject.SetActive(l + 1 < latestFile);
     }
 
     void ClearLevels()

@@ -428,8 +428,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 412228170}
-        m_TargetAssemblyTypeName: EnableRandomLevels, Assembly-CSharp
+      - m_Target: {fileID: 412228174}
+        m_TargetAssemblyTypeName: TopicSetToggleHandler, Assembly-CSharp
         m_MethodName: ToggleSelection
         m_Mode: 1
         m_Arguments:
@@ -1141,7 +1141,7 @@ GameObject:
   - component: {fileID: 412228173}
   - component: {fileID: 412228172}
   - component: {fileID: 412228171}
-  - component: {fileID: 412228170}
+  - component: {fileID: 412228174}
   m_Layer: 5
   m_Name: TopicLevels
   m_TagString: cloned
@@ -1172,19 +1172,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -686.99994}
   m_SizeDelta: {x: 420, y: 120}
   m_Pivot: {x: 0.5, y: 0.50000006}
---- !u!114 &412228170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412228168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8193ca114612ef4fb9056ab461dff1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkmark: {fileID: 50183899}
 --- !u!114 &412228171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1229,9 +1216,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 412228168}
-        m_TargetAssemblyTypeName: EnableRandomLevels, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 412228174}
+        m_TargetAssemblyTypeName: TopicSetToggleHandler, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1279,6 +1266,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412228168}
   m_CullTransparentMesh: 0
+--- !u!114 &412228174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412228168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c6dd64e393a4f7d985bd6e3d98616e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkmark: {fileID: 50183899}
 --- !u!1 &627538489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2339,7 +2339,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 412228170}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EnableRandomLevels, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -3023,8 +3023,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 412228170}
-        m_TargetAssemblyTypeName: EnableRandomLevels, Assembly-CSharp
+      - m_Target: {fileID: 412228174}
+        m_TargetAssemblyTypeName: TopicSetToggleHandler, Assembly-CSharp
         m_MethodName: ToggleSelection
         m_Mode: 1
         m_Arguments:
@@ -3869,7 +3869,6 @@ GameObject:
   - component: {fileID: 1458256440}
   - component: {fileID: 1458256439}
   - component: {fileID: 1458256437}
-  - component: {fileID: 1458256438}
   m_Layer: 5
   m_Name: LevelSetToggle
   m_TagString: cloned
@@ -3910,19 +3909,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f03e4f0a339342fc9f0cd5bb265609d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkmark: {fileID: 1979759521}
---- !u!114 &1458256438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458256435}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8193ca114612ef4fb9056ab461dff1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   checkmark: {fileID: 1979759521}
@@ -4958,7 +4944,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1458256438}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EnableRandomLevels, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
