@@ -10,6 +10,7 @@ public class AnimationManager : MonoBehaviour
 {
     public bool PlayOnEnable = true;
     public int PRACTICE_LEVEL_INTERVAL = 5;
+    private static bool isIndian = false; // Global boolean variable
     System.Collections.Generic.Dictionary<string, string> parameters;
 
     void OnEnable()
@@ -27,7 +28,7 @@ public class AnimationManager : MonoBehaviour
 
     public void OnFinished()
     {
-        
+
     }
 
     public void PlaySoundButton()
@@ -100,7 +101,6 @@ public class AnimationManager : MonoBehaviour
             {
                 GameObject.Find("Canvas").transform.Find("CongratsModal").gameObject.SetActive(true);
                 PlayerPrefs.SetInt("CongratsModalShown", 1);
-                //PlayerPrefs.Save();
             }
             else
             {
@@ -122,11 +122,16 @@ public class AnimationManager : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene("game");
+                if (isIndian)
+                {
+                    SceneManager.LoadScene("game1");
+                }
+                else
+                {
+                    SceneManager.LoadScene("game");
+                }
                 VideoManager.resetVideoManager();
             }
-
-
         }
         else if (gameObject.name == "NextLevel")
         {
@@ -140,17 +145,23 @@ public class AnimationManager : MonoBehaviour
                 PlayerPrefs.SetInt("OpenLevel", PlayerPrefs.GetInt("OpenLevel") + 1);
                 PlayerPrefs.Save();
 
-                int randomizeLevels = PlayerPrefs.GetInt("RandomizeLevel", 0); //Added for randomized levels
+                int randomizeLevels = PlayerPrefs.GetInt("RandomizeLevel", 0);
 
-                //Added or statement to check if randomizedLevels = 1 to see if practice should be shown before every level
                 if (PlayerPrefs.GetInt("OpenLevel") % PRACTICE_LEVEL_INTERVAL == 0 || randomizeLevels == 1)
                 {
-                    VideoManager.resetVideoManager(); //Added to fix bug where words from previous level were shown in practice video rather than current level
+                    VideoManager.resetVideoManager();
                     SceneManager.LoadScene("practice");
                 }
                 else
                 {
-                    SceneManager.LoadScene("game");
+                    if (isIndian)
+                    {
+                        SceneManager.LoadScene("game1");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("game");
+                    }
                     VideoManager.resetVideoManager();
                 }
             }
@@ -165,10 +176,16 @@ public class AnimationManager : MonoBehaviour
             {
                 PlayerPrefs.SetInt("OpenLevel", PlayerPrefs.GetInt("OpenLevel"));
                 PlayerPrefs.Save();
-                SceneManager.LoadScene("game");
+                if (isIndian)
+                {
+                    SceneManager.LoadScene("game1");
+                }
+                else
+                {
+                    SceneManager.LoadScene("game");
+                }
                 VideoManager.resetVideoManager();
             }
-
         }
         else if (gameObject.name == "PlayMain")
         {
@@ -256,7 +273,7 @@ public class AnimationManager : MonoBehaviour
         {
             CustomizeLevelManager.switchOff();
         }
-        if (SceneManager.GetActiveScene().name == "game")
+        if (SceneManager.GetActiveScene().name == "game1")
             SceneManager.LoadScene("map");
         else
             Application.Quit();
