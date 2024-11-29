@@ -1,0 +1,22 @@
+{
+	"bluefileName":"Ritu",
+	"blueframeNumber":60,
+	"bluefolderName":"MacarthurBates/ByTopic/Season",
+	"blueImageName":"WordIcons/Ritu",
+	"greenfileName":"Vasant",
+	"greenframeNumber":47,
+	"greenfolderName":"MacarthurBates/ByTopic/spring",
+	"greenImageName":"WordIcons/Vasant",
+	"redfileName":"Garmi",
+	"redframeNumber":49,
+	"redfolderName":"MacarthurBates/ByTopic/Summer",
+	"redImageName":"WordIcons/Garmi",
+	"violetfileName":"Patjhad",
+	"violetframeNumber":43,
+	"violetfolderName":"MacarthurBates/ByTopic/fall",
+	"violetImageName":"WordIcons/Patjhad",
+	"yellowfileName":"Sardi",
+	"yellowframeNumber":67,
+	"yellowfolderName":"MacarthurBates/ByTopic/winter",
+	"yellowImageName":"WordIcons/Sardi"
+}

@@ -1,0 +1,22 @@
+{
+	"bluefileName":"Neela",
+	"blueframeNumber":60,
+	"bluefolderName":"MacarthurBates/ByTopic/Blue",
+	"blueImageName":"WordIcons/Neela",
+	"greenfileName":"Bhura",
+	"greenframeNumber":47,
+	"greenfolderName":"MacarthurBates/ByTopic/Brown",
+	"greenImageName":"WordIcons/Bhura",
+	"redfileName":"Hara",
+	"redframeNumber":49,
+	"redfolderName":"MacarthurBates/ByTopic/green",
+	"redImageName":"WordIcons/Hara",
+	"violetfileName":"Laal",
+	"violetframeNumber":43,
+	"violetfolderName":"MacarthurBates/ByTopic/Red",
+	"violetImageName":"WordIcons/Laal",
+	"yellowfileName":"Peela",
+	"yellowframeNumber":67,
+	"yellowfolderName":"MacarthurBates/ByTopic/Yellow",
+	"yellowImageName":"WordIcons/Peela"
+}

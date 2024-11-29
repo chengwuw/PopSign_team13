@@ -1,0 +1,22 @@
+{
+	"bluefileName":"Aap",
+	"blueframeNumber":60,
+	"bluefolderName":"MacarthurBates/ByTopic/you",
+	"blueImageName":"WordIcons/Aap",
+	"greenfileName":"Main",
+	"greenframeNumber":47,
+	"greenfolderName":"MacarthurBates/ByTopic/I",
+	"greenImageName":"WordIcons/Main",
+	"redfileName":"Woh",
+	"redframeNumber":49,
+	"redfolderName":"MacarthurBates/ByTopic/he",
+	"redImageName":"WordIcons/Woh",
+	"violetfileName":"Vo",
+	"violetframeNumber":43,
+	"violetfolderName":"MacarthurBates/ByTopic/she",
+	"violetImageName":"WordIcons/Vo",
+	"yellowfileName":"Yeh",
+	"yellowframeNumber":67,
+	"yellowfolderName":"MacarthurBates/ByTopic/it",
+	"yellowImageName":"WordIcons/Yeh"
+}

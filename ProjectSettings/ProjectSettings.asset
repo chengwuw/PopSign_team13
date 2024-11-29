@@ -941,11 +941,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: a4dcf401-d7e9-464f-9130-06eed8beb845
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: PopSign_team13
+  organizationId: cweng36
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 1
   playerDataPath: 

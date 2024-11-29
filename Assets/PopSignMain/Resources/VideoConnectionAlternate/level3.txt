@@ -1,0 +1,22 @@
+{
+	"bluefileName":"old",
+	"blueframeNumber":60,
+	"bluefolderName":"MacarthurBates/BySentence/old",
+	"blueImageName":"WordIcons/old",
+	"greenfileName":"Grandfather",
+	"greenframeNumber":47,
+	"greenfolderName":"MacarthurBates/BySentence/Grandfather",
+	"greenImageName":"WordIcons/Grandfather",
+	"redfileName":"walk",
+	"redframeNumber":49,
+	"redfolderName":"MacarthurBates/BySentence/walk",
+	"redImageName":"WordIcons/walk",
+	"violetfileName":"quiet",
+	"violetframeNumber":43,
+	"violetfolderName":"MacarthurBates/BySentence/quiet",
+	"violetImageName":"WordIcons/quiet",
+	"yellowfileName":"slow",
+	"yellowframeNumber":67,
+	"yellowfolderName":"MacarthurBates/BySentence/slow",
+	"yellowImageName":"WordIcons/slow"
+}

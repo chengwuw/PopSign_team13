@@ -1,0 +1,22 @@
+{
+	"bluefileName":"beautiful",
+	"blueframeNumber":60,
+	"bluefolderName":"MacarthurBates/BySentence/Beautiful",
+	"blueImageName":"WordIcons/beautiful",
+	"greenfileName":"girl",
+	"greenframeNumber":47,
+	"greenfolderName":"MacarthurBates/BySentence/Girl",
+	"greenImageName":"WordIcons/girl",
+	"redfileName":"see",
+	"redframeNumber":49,
+	"redfolderName":"MacarthurBates/BySentence/See",
+	"redImageName":"WordIcons/see",
+	"violetfileName":"blue",
+	"violetframeNumber":43,
+	"violetfolderName":"MacarthurBates/BySentence/Blue",
+	"violetImageName":"WordIcons/blue",
+	"yellowfileName":"bird",
+	"yellowframeNumber":67,
+	"yellowfolderName":"MacarthurBates/BySentence/Bird",
+	"yellowImageName":"WordIcons/bird"
+}

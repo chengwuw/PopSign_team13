@@ -27,7 +27,7 @@ public class VideoManager {
 		curtVideo = null;
 		if(SceneManager.GetActiveScene().name != "review")
 		{
-				ReadJsonFromTXT ();
+			ReadJsonFromTXT ();
 		}
 	}
 
@@ -49,63 +49,142 @@ public class VideoManager {
 		return sharedVideoManager;
 	}
 
-	//POPSign Read Json file(The connection between colors and videos)
-	void ReadJsonFromTXT()
-	{
-		int currentLevel = PlayerPrefs.GetInt("OpenLevel");
 
-		//For Random Levels (BK)
-		int randomizeLevels = PlayerPrefs.GetInt("RandomizeLevel", 0);
+	// void ReadJsonFromTXT()
+	// {
+	// 	int currentLevel = PlayerPrefs.GetInt("OpenLevel");
+
+	// 	// Get the toggle state for alternate levels
+	// 	LevelSetToggleHandler toggleHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+	// 	string videoConnectionPath = toggleHandler != null && toggleHandler.GetLevelSetPath() == "AlternateLevels/"
+	// 		? "VideoConnectionAlternate/"
+	// 		: "VideoConnection/";
+
+	// 	// Log the path being used
+	// 	Debug.Log("Video connection path: " + videoConnectionPath);
+
+	// 	// Load the JSON file for the current level
+	// 	TextAsset textReader = Resources.Load(videoConnectionPath + "level" + currentLevel) as TextAsset;
+	// 	if (textReader == null)
+	// 	{
+	// 		Debug.LogError("Video JSON file not found at: " + videoConnectionPath + "level" + currentLevel);
+	// 		return;
+	// 	}
+
+	// 	// Process the JSON data
+	// 	JsonData jd = JsonMapper.ToObject(textReader.text);
+
+	// 	foreach (BallColor color in Enum.GetValues(typeof(BallColor)))
+	// 	{
+	// 		if (color == BallColor.random)
+	// 		{
+	// 			break;
+	// 		}
+	// 		string fileName = jd[color + "fileName"] + "";
+	// 		folderName = jd[color + "folderName"] + "";
+	// 		string frameNumber = jd[color + "frameNumber"] + "";
+	// 		string imageName = jd[color + "ImageName"] + "";
+	// 		if (!string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(folderName) &&
+	// 			!string.IsNullOrEmpty(frameNumber) && !string.IsNullOrEmpty(imageName))
+	// 		{
+	// 			videoList.Add(new Video(int.Parse(frameNumber), fileName, folderName, imageName, color));
+	// 		}
+
+	// 		string wordsSeen = PlayerPrefs.GetString("WordsSeen", "");
+	// 		string[] words = wordsSeen.Split(',');
+	// 		if (!words.Contains(fileName))
+	// 		{
+	// 			PlayerPrefs.SetString("WordsSeen", wordsSeen + fileName + ",");
+	// 		}
+	// 	}
+
+	// 	// Set the first video as the current video
+	// 	curtVideo = (Video)videoList[0];
+	// 	curtVideoIndex = 0;
+	// }
 
 
-		//This seems to fetc
 
-		//For Random Levels (BK)
-		TextAsset textReader;
-		if(randomizeLevels == 0)
+    void ReadJsonFromTXT()
+    {
+        int currentLevel = PlayerPrefs.GetInt("OpenLevel");
+
+        // Determine the video connection path based on the toggle state
+        string videoConnectionPath = GetVideoConnectionPath();
+
+        // Log the path being used
+        Debug.Log("Video connection path: " + videoConnectionPath);
+
+        // Load the JSON file for the current level
+        TextAsset textReader = Resources.Load(videoConnectionPath + "level" + currentLevel) as TextAsset;
+        if (textReader == null)
         {
-			//Original code
-			textReader = Resources.Load("VideoConnection/" + "level" + currentLevel) as TextAsset;
-			Debug.Log("VideoConnection/" + "level" + currentLevel);
-		}
-        else
+            Debug.LogError("Video JSON file not found at: " + videoConnectionPath + "level" + currentLevel);
+            return;
+        }
+
+        // Process the JSON data
+        JsonData jd = JsonMapper.ToObject(textReader.text);
+
+        foreach (BallColor color in Enum.GetValues(typeof(BallColor)))
         {
-			string path = Application.persistentDataPath + "/level" + currentLevel + ".txt";
-			string levelText;
-			using(StreamReader reader = new StreamReader(path))
+            if (color == BallColor.random)
             {
-				levelText = reader.ReadToEnd();
+                break;
+            }
+            string fileName = jd[color + "fileName"] + "";
+            folderName = jd[color + "folderName"] + "";
+            string frameNumber = jd[color + "frameNumber"] + "";
+            string imageName = jd[color + "ImageName"] + "";
+            if (!string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(folderName) &&
+                !string.IsNullOrEmpty(frameNumber) && !string.IsNullOrEmpty(imageName))
+            {
+                videoList.Add(new Video(int.Parse(frameNumber), fileName, folderName, imageName, color));
             }
 
-			textReader = new TextAsset(levelText);
-			Debug.Log(path);
-		}
-		
-		JsonData jd = JsonMapper.ToObject(textReader.text);
+            string wordsSeen = PlayerPrefs.GetString("WordsSeen", "");
+            string[] words = wordsSeen.Split(',');
+            if (!words.Contains(fileName))
+            {
+                PlayerPrefs.SetString("WordsSeen", wordsSeen + fileName + ",");
+            }
+        }
 
-		foreach(BallColor color in Enum.GetValues(typeof(BallColor)))
+        // Set the first video as the current video
+        curtVideo = (Video)videoList[0];
+        curtVideoIndex = 0;
+    }
+
+	private string GetVideoConnectionPath()
+	{
+		// Attempt to find the handlers in the current scene
+		TopicSetToggleHandler topicHandler = GameObject.FindObjectOfType<TopicSetToggleHandler>();
+		LevelSetToggleHandler levelHandler = GameObject.FindObjectOfType<LevelSetToggleHandler>();
+
+		// Check handlers
+		if (topicHandler != null && topicHandler.GetLevelSetPath() == "TopicLevels/")
 		{
-			if (color == BallColor.random)
-			{
-				break;
-			}
-			string fileName = jd[color + "fileName"] + "";
-			folderName = jd[color + "folderName"] + "";
-			string frameNumber = jd[color + "frameNumber"] + "";
-			string imageName = jd [color + "ImageName"] + "";
-			if (fileName != "" && folderName != "" && frameNumber != "" && imageName != "")
-			{
-				videoList.Add(new Video (int.Parse (frameNumber), fileName, folderName, imageName, color));
-			}
-			string wordsSeen = PlayerPrefs.GetString("WordsSeen", "");
-			string[] words = wordsSeen.Split(',');
-			if(!words.Contains(fileName))
-			{
-				PlayerPrefs.SetString("WordsSeen", wordsSeen + fileName + ",");
-			}
+			return "VideoConnectionTopic/";
 		}
-		curtVideo = (Video) videoList [0];
-		curtVideoIndex = 0;
+		else if (levelHandler != null && levelHandler.GetLevelSetPath() == "AlternateLevels/")
+		{
+			return "VideoConnectionAlternate/";
+		}
+
+		// Fallback to PlayerPrefs if handlers are not available
+		int useAlternateLevels = PlayerPrefs.GetInt("UseAlternateLevels", 0);
+		int useTopicLevels = PlayerPrefs.GetInt("UseTopicLevels", 0);
+		if (useAlternateLevels == 1)
+		{
+			return "VideoConnectionAlternate/";
+		}
+		else if (useTopicLevels == 1)
+		{
+			return "VideoConnectionTopic/";
+		}
+
+		Debug.LogWarning("No valid toggle detected. Defaulting to 'VideoConnection/'.");
+		return "VideoConnection/";
 	}
 
 	public void setReviewWord(string word)

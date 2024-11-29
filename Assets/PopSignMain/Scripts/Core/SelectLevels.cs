@@ -17,42 +17,81 @@ public class SelectLevels : MonoBehaviour
     int currPage = 1;
     int totalPage;
     int itemsInGrid = 16;
+
+    private string levelSetPath; // Path to the selected level set
+
     // Use this for initialization
     void Start()
     {
         pageText = GameObject.Find("Page Text").GetComponent<Text>();
+
+        // Dynamically determine the level set to use based on the toggle state
+        DetermineLevelSetPath();
+
         GenerateGrid();
+    }
+
+    void DetermineLevelSetPath()
+    {
+        // Find both toggle handlers
+        TopicSetToggleHandler topicHandler = FindObjectOfType<TopicSetToggleHandler>();
+        LevelSetToggleHandler levelHandler = FindObjectOfType<LevelSetToggleHandler>();
+
+		// Check for null handlers and log the issue
+		if (topicHandler == null && levelHandler == null)
+		{
+			Debug.Log("Both TopicSetToggleHandler and LevelSetToggleHandler are missing from the scene.");
+			levelSetPath = "Levels/"; // Default path
+		}
+
+        // Determine the active level set path
+        if (topicHandler.GetLevelSetPath() == "TopicLevels/")
+        {
+            levelSetPath = topicHandler.GetLevelSetPath(); // Use Topic Levels path
+        }
+        else if (levelHandler.GetLevelSetPath() == "AlternateLevels/")
+        {
+            levelSetPath = levelHandler.GetLevelSetPath(); // Use Alternate Levels path
+        }
+        else
+        {
+            Debug.Log("No valid toggle handler detected. Defaulting to 'Levels/'.");
+            levelSetPath = "Levels/"; // Default path
+        }
+
     }
 
 
     void GenerateGrid(int genfrom = 0)
     {
         int l = 0;
-        int posCOunter = 0;
+        int posCounter = 0;
         ClearLevels();
         firstShownLevelInGrid = genfrom;
         latestFile = GetLastLevel();
         totalPage = (latestFile / itemsInGrid);
         if (latestFile % itemsInGrid != 0)
         {
-          totalPage += 1;
+            totalPage += 1;
         }
         SetPage(currPage);
         for (l = genfrom; l < latestFile; l++)
         {
             GameObject level = Instantiate(levelPrefab) as GameObject;
-            level.GetComponent<Level>().number = l+1;
+            level.GetComponent<Level>().number = l + 1;
             level.transform.SetParent(transform);
-            level.transform.localPosition = startPosition + Vector2.right * (posCOunter % countInRow) * offset.x + Vector2.down * (posCOunter / countInColumn) * offset.y;
+            level.transform.localPosition = startPosition + Vector2.right * (posCounter % countInRow) * offset.x + Vector2.down * (posCounter / countInColumn) * offset.y;
             level.transform.localScale = Vector2.one;
-            if (posCOunter + 1 >= countInRow * countInColumn) break;
-            posCOunter++;
+            if (posCounter + 1 >= countInRow * countInColumn) break;
+            posCounter++;
         }
-        if (genfrom == 0) backButton.gameObject.SetActive(false);
-        else if (genfrom > 0) backButton.gameObject.SetActive(true);
-        if (l + 1 >= latestFile) nextButton.gameObject.SetActive(false);
-        else nextButton.gameObject.SetActive(true);
+        // if (genfrom == 0) backButton.gameObject.SetActive(false);
+        // else if (genfrom > 0) backButton.gameObject.SetActive(true);
+        // if (l + 1 >= latestFile) nextButton.gameObject.SetActive(false);
+        // else nextButton.gameObject.SetActive(true);
 
+        backButton.gameObject.SetActive(genfrom > 0);
+        nextButton.gameObject.SetActive(l + 1 < latestFile);
     }
 
     void ClearLevels()
@@ -67,14 +106,14 @@ public class SelectLevels : MonoBehaviour
     {
         GenerateGrid(firstShownLevelInGrid + countInRow * countInColumn);
         SetPage(currPage + 1);
-        SoundBase.Instance.GetComponent<AudioSource>().PlayOneShot( SoundBase.Instance.click );
+        SoundBase.Instance.GetComponent<AudioSource>().PlayOneShot(SoundBase.Instance.click);
     }
 
     public void Back()
     {
         GenerateGrid(firstShownLevelInGrid - countInRow * countInColumn);
         SetPage(currPage - 1);
-        SoundBase.Instance.GetComponent<AudioSource>().PlayOneShot( SoundBase.Instance.click );
+        SoundBase.Instance.GetComponent<AudioSource>().PlayOneShot(SoundBase.Instance.click);
     }
 
     public void SetPage(int page)
@@ -86,9 +125,11 @@ public class SelectLevels : MonoBehaviour
     public int GetLastLevel()
     {
         TextAsset mapText = null;
+
+        // Use the selected level set directory
         for (int i = 1; i < 50000; i++)
         {
-            mapText = Resources.Load("Levels/" + i) as TextAsset;
+            mapText = Resources.Load(levelSetPath + i) as TextAsset;
             if (mapText == null)
             {
                 PlayerPrefs.SetInt("NumLevels", i - 1);

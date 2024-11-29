@@ -27,6 +27,8 @@ namespace InitScriptName
         public static string timeForReps;
         public Target currentTarget;
 
+        private static bool isIndian = true; // Global boolean variable
+
         public void Awake()
         {
             Instance = this;
@@ -80,7 +82,18 @@ namespace InitScriptName
             PlayerPrefs.SetInt("OpenLevel", number);
             PlayerPrefs.Save();
             VideoManager.resetVideoManager();
-            SceneManager.LoadScene("practice");
+		    isIndian = PlayerPrefs.GetInt("UseIndianLevels", 0) == 1; // Default is false (0)
+            // SceneManager.LoadScene("practice");
+
+            if (isIndian)
+            {
+                SceneManager.LoadScene("practice1");
+            }
+            else
+            {
+                SceneManager.LoadScene("practice");
+            }
+
         }
 
         void OnApplicationPause(bool pauseStatus)

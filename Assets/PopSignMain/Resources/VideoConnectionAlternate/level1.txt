@@ -1,0 +1,22 @@
+{
+	"bluefileName":"we",
+	"blueframeNumber":60,
+	"bluefolderName":"MacarthurBates/BySentence/We",
+	"blueImageName":"WordIcons/we",
+	"greenfileName":"laugh",
+	"greenframeNumber":47,
+	"greenfolderName":"MacarthurBates/BySentence/Laugh",
+	"greenImageName":"WordIcons/laugh",
+	"redfileName":"loud",
+	"redframeNumber":49,
+	"redfolderName":"MacarthurBates/BySentence/Loud",
+	"redImageName":"WordIcons/loud",
+	"violetfileName":"happy",
+	"violetframeNumber":43,
+	"violetfolderName":"MacarthurBates/BySentence/Happy",
+	"violetImageName":"WordIcons/happy",
+	"yellowfileName":"today",
+	"yellowframeNumber":67,
+	"yellowfolderName":"MacarthurBates/BySentence/Today",
+	"yellowImageName":"WordIcons/today"
+}
